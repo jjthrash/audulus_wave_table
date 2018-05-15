@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.files       = Dir.glob("lib/*")
   s.executables << "build_audulus_wavetable_node"
   s.homepage    =
-    'http://rubygems.org/gems/build_audulus_wavetable_node'
+    'https://github.com/jjthrash/audulus_wave_table'
   s.license       = 'MIT'
 
   s.add_runtime_dependency 'fftw3', '~> 0.3'
