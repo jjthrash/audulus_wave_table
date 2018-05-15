@@ -261,9 +261,21 @@ def build_patch_from_samples(samples, title1, title2, output_path)
   File.write(output_path, JSON.generate(make_subpatch(Patch.build_patch(samples, title1, title2)['patch'])))
 end
 
+def usage
+  <<-END
+Usage: bundle exec ruby #{__FILE__} <wav_file>
+
+Outputs an audulus patch built from the <wav_file>. Assumes the input is monophonic, containing a single-cycle waveform.
+  END
+end
+
 # This code is the starting point.. if we run this file as
 # its own program, do the following
 if __FILE__ == $0
-  path = ARGV[0]
-  build_patch_from_wav_file(path)
+  if ARGV.count != 1
+    puts usage
+  else
+    path = ARGV[0]
+    build_patch_from_wav_file(path)
+  end
 end
