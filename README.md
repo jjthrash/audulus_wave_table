@@ -2,9 +2,14 @@
 
 ## Installing
 
+From a terminal:
+
 ```
 sudo gem install build_audulus_wavetable_node
 ```
+
+You will be asked for a password. Use your own password. The `sudo` command
+runs a program as the superuser, allowing it to install the library.
 
 ## Using
 
@@ -20,3 +25,5 @@ a single cycle, monophonic, and probably would prefer CD quality or above
 
 - rearrange to make useful as a library so people can supply calculated
   samples rather than only WAV files
+- allow users to specify title and subtitle for nodes rather than using
+  parent directory and filename
