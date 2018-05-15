@@ -21,6 +21,12 @@ will output `<path_to_wav_file.audulus>`. Assumes the input WAV file is
 a single cycle, monophonic, and probably would prefer CD quality or above
 (16-bits per sample).
 
+## What to do with the results
+
+See the [excellent tutorial](https://www.youtube.com/watch?v=nWPuRtrBfvM)
+about spline nodes by forum user RobertSyrett for ideas on what you can do
+with the results of running this script.
+
 ## TODO
 
 - rearrange to make useful as a library so people can supply calculated
