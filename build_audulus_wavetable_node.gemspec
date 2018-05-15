@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'build_audulus_wavetable_node'
-  s.version     = '0.0.0'
+  s.version     = '0.1.0'
   s.date        = '2018-05-15'
   s.summary     = "Builds a wavetable patch for Audulus given a WAV file"
   s.description = ""
