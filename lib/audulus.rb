@@ -256,5 +256,5 @@ SUBPATCH_NODE = JSON.parse <<JSON
 }
 JSON
 
-CLOCK_NODE = JSON.parse(File.read('clock.json'))
-VIA_NODE = JSON.parse(File.read('via.audulus'))['patch']['nodes'][0]
+CLOCK_NODE = JSON.parse(File.read(File.join(File.dirname(__FILE__), 'clock.json')))
+VIA_NODE = JSON.parse(File.read(File.join(File.dirname(__FILE__), 'via.audulus')))['patch']['nodes'][0]

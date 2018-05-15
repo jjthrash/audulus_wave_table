@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require 'build_audulus_wavetable_node'
+command(ARGV)
+

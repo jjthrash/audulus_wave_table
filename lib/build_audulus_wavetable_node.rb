@@ -164,12 +164,12 @@ class Patch
     doc
   end
 
-  XMUX_NODE = JSON.parse(File.read('xmux.audulus'))['patch']['nodes'][0]
+  XMUX_NODE = JSON.parse(File.read(File.join(File.dirname(__FILE__), 'xmux.audulus')))['patch']['nodes'][0]
   def self.build_xmux_node
     clone_node(XMUX_NODE)
   end
 
-  O2HZ_NODE = JSON.parse(File.read('o2Hz.audulus'))['patch']['nodes'][0]
+  O2HZ_NODE = JSON.parse(File.read(File.join(File.dirname(__FILE__), 'o2Hz.audulus')))['patch']['nodes'][0]
   def self.build_o2hz_node
     clone_node(O2HZ_NODE)
   end
@@ -263,19 +263,17 @@ end
 
 def usage
   <<-END
-Usage: bundle exec ruby #{__FILE__} <wav_file>
+Usage: build_audulus_wavetable_node <wav_file>
 
 Outputs an audulus patch built from the <wav_file>. Assumes the input is monophonic, containing a single-cycle waveform.
   END
 end
 
-# This code is the starting point.. if we run this file as
-# its own program, do the following
-if __FILE__ == $0
-  if ARGV.count != 1
+def command(argv)
+  if argv.count != 1
     puts usage
   else
-    path = ARGV[0]
+    path = argv[0]
     unless File.exist?(path)
       puts "Cannot find WAV file at #{path}"
       exit(1)
@@ -283,4 +281,10 @@ if __FILE__ == $0
 
     build_patch_from_wav_file(path)
   end
+end
+
+# This code is the starting point.. if we run this file as
+# its own program, do the following
+if __FILE__ == $0
+  command(ARGV)
 end
