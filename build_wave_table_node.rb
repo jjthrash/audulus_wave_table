@@ -276,6 +276,11 @@ if __FILE__ == $0
     puts usage
   else
     path = ARGV[0]
+    unless File.exist?(path)
+      puts "Cannot find WAV file at #{path}"
+      exit(1)
+    end
+
     build_patch_from_wav_file(path)
   end
 end
