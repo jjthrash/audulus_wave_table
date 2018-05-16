@@ -1,3 +1,5 @@
+require_relative 'resample'
+
 class WavetablePatch
   class <<self
     include Audulus
