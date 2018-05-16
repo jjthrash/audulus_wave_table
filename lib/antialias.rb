@@ -1,10 +1,10 @@
 require 'fftw3'
 
-class Resample
+class Antialias
   # sample_rate, Hz, e.g. 44100
   # fundamental, Hz, e.g. 440
   # samples: -1..1
-  def self.resample_for_fundamental(sample_rate, fundamental, samples)
+  def self.antialias_for_fundamental(sample_rate, fundamental, samples)
     fft = FFTW3.fft(NArray[samples]).to_a.flatten
     dampened = dampen_higher_partials(sample_rate, fundamental, fft)
     (FFTW3.ifft(NArray[dampened]) / samples.count).real.to_a.flatten

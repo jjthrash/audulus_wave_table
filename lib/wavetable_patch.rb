@@ -1,4 +1,4 @@
-require_relative 'resample'
+require_relative 'antialias'
 
 class WavetablePatch
   class <<self
@@ -60,7 +60,7 @@ class WavetablePatch
     # for each frequency band, resample using the method outlined above
     frequencies = (0..7).map {|i| 55*2**i}
     sample_sets = frequencies.map {|frequency|
-      Resample.resample_for_fundamental(44100, frequency, samples)
+      Antialias.antialias_for_fundamental(44100, frequency, samples)
     }
 
     # normalize the samples
