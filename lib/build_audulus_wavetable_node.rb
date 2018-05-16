@@ -46,6 +46,10 @@ class Sox
 end
 
 class WavetablePatch
+  class <<self
+    include Audulus
+  end
+
   # Take a list of samples corresponding to a single cycle wave form
   # and generate an Audulus patch with a single wavetable node that
   # has title1 and title2 as title and subtitle
@@ -226,7 +230,7 @@ def build_wavetable_patch_from_wav_file(path)
   base_patch = WavetablePatch.build_patch(patch_data[:samples], patch_data[:title1], patch_data[:title2])['patch']
 
   # wrap it up as a subpatch
-  final_patch = make_subpatch(base_patch)
+  final_patch = Audulus.make_subpatch(base_patch)
 
   # write the patch to a file as JSON (the format Audulus uses)
   File.write(patch_data[:output_path], JSON.generate(final_patch))
@@ -237,10 +241,10 @@ end
 def build_spline_patch_from_wav_file(path)
   patch_data = build_patch_data(path)
 
-  doc = build_init_doc
+  doc = Audulus.build_init_doc
   patch = doc['patch']
   spline_node = WavetablePatch.build_spline_node_from_samples(patch_data[:samples])
-  add_node(patch, spline_node)
+  Audulus.add_node(patch, spline_node)
 
   File.write(patch_data[:output_path], JSON.generate(doc))
 end
@@ -287,7 +291,7 @@ end
 # Given a set of samples, build the Audulus wavetable node
 def build_patch_from_samples(samples, title1, title2, output_path)
   puts "building #{output_path}"
-  File.write(output_path, JSON.generate(make_subpatch(WavetablePatch.build_patch(samples, title1, title2)['patch'])))
+  File.write(output_path, JSON.generate(Audulus.make_subpatch(WavetablePatch.build_patch(samples, title1, title2)['patch'])))
 end
 
 require 'optparse'
