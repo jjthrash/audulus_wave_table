@@ -8,7 +8,7 @@ class WavetablePatch
   # Take a list of samples corresponding to a single cycle wave form
   # and generate an Audulus patch with a single wavetable node that
   # has title1 and title2 as title and subtitle
-  def self.build_patch(samples, title1, title2)
+  def self.build_patch_helper(samples, title1, title2)
     # The below code lays out the Audulus nodes as needed to build
     # the patch. It should mostly be familiar to anyone who's built
     # an Audulus patch by hand.
@@ -119,11 +119,9 @@ class WavetablePatch
 
   # Given a path to a single-cycle-waveform wav file, generate an Audulus wavetable
   # node
-  def self.build_patch_from_wav_file(path)
-    patch_data = build_patch_data(path)
-
+  def self.build_patch(patch_data)
     # build the patch as a full patch
-    base_patch = WavetablePatch.build_patch(patch_data[:samples], patch_data[:title1], patch_data[:title2])['patch']
+    base_patch = build_patch_helper(patch_data[:samples], patch_data[:title1], patch_data[:title2])['patch']
 
     # wrap it up as a subpatch
     final_patch = Audulus.make_subpatch(base_patch)
