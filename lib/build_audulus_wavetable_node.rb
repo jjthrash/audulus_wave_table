@@ -31,20 +31,9 @@ require 'json'
 require_relative 'audulus'
 require_relative 'sox'
 require_relative 'wavetable_patch'
+require_relative 'spline_patch'
 require_relative 'spline_helper'
 
-# Build just a spline from the given samples. Intended for automation rather than
-# for wavetables.
-def build_spline_patch_from_wav_file(path)
-  patch_data = build_patch_data(path)
-
-  doc = Audulus.build_init_doc
-  patch = doc['patch']
-  spline_node = SplineHelper.build_spline_node_from_samples(patch_data[:samples])
-  Audulus.add_node(patch, spline_node)
-
-  File.write(patch_data[:output_path], JSON.generate(doc))
-end
 
 def build_patch_data(path)
   # break the path into directory and path so we can build the audulus file's name
@@ -116,7 +105,7 @@ def command(argv)
   end
 
   if options[:spline_only]
-    build_spline_patch_from_wav_file(path)
+    SplinePatch.build_patch_from_wav_file(path)
   else
     WavetablePatch.build_patch_from_wav_file(path)
   end
