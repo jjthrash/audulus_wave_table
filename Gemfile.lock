@@ -11,13 +11,17 @@ GEM
     fftw3 (0.3)
       narray
     midilib (2.0.5)
+    minitest (5.11.3)
     narray (0.6.1.2)
+    rake (12.3.1)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   build_audulus_wavetable_node!
+  minitest
+  rake
 
 BUNDLED WITH
    1.16.0
