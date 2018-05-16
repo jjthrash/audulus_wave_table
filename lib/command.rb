@@ -7,7 +7,7 @@ require_relative 'spline_patch'
 require_relative 'spline_helper'
 
 module Command
-  def self.build_patch_data(path)
+  def self.build_patch_data(path, title, subtitle)
     # break the path into directory and path so we can build the audulus file's name
     parent, file = path.split("/")[-2..-1]
 
@@ -19,11 +19,15 @@ module Command
     puts "building #{basename}.audulus"
     audulus_patch_name = "#{basename}.audulus"
 
-    { :output_path => audulus_patch_name,
-      :samples => samples,
-      :title1 => parent,
-      :title2 => basename,
-    }
+    results = { :output_path => audulus_patch_name,
+                :samples     => samples,
+                :title       => title,
+                :subtitle    => subtitle, }
+
+    results[:title]    ||= parent
+    results[:subtitle] ||= basename
+
+    results
   end
 
   # Given a set of samples, build the Audulus wavetable node
@@ -45,6 +49,14 @@ module Command
 
       opts.on("-s", "--spline-only", "generate a patch containing only a spline corresponding to the samples in the provided WAV file") do
         results[:spline_only] = true
+      end
+
+      opts.on("-tTITLE", "--title=TITLE", "provide a title for the patch (defaults to parent directory)") do |t|
+        results[:title] = t
+      end
+
+      opts.on("-uSUBTITLE", "--subtitle=SUBTITLE", "provide a subtitle for the patch (defaults to file name, minus .wav)") do |u|
+        results[:subtitle] = u
       end
     end
 
@@ -74,7 +86,7 @@ module Command
       exit(1)
     end
 
-    patch_data = build_patch_data(path)
+    patch_data = build_patch_data(path, options[:title], options[:subtitle])
 
     if options[:spline_only]
       SplinePatch.build_patch(patch_data)

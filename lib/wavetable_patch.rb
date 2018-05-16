@@ -121,7 +121,7 @@ class WavetablePatch
   # node
   def self.build_patch(patch_data)
     # build the patch as a full patch
-    base_patch = build_patch_helper(patch_data[:samples], patch_data[:title1], patch_data[:title2])['patch']
+    base_patch = build_patch_helper(patch_data[:samples], patch_data[:title], patch_data[:subtitle])['patch']
 
     # wrap it up as a subpatch
     final_patch = Audulus.make_subpatch(base_patch)
