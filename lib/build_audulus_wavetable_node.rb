@@ -173,16 +173,6 @@ class WavetablePatch
 #    move_node(spline_node, -100, i*200)
     spline_node
   end
-
-  XMUX_NODE = JSON.parse(File.read(File.join(File.dirname(__FILE__), 'xmux.audulus')))['patch']['nodes'][0]
-  def self.build_xmux_node
-    clone_node(XMUX_NODE)
-  end
-
-  O2HZ_NODE = JSON.parse(File.read(File.join(File.dirname(__FILE__), 'o2Hz.audulus')))['patch']['nodes'][0]
-  def self.build_o2hz_node
-    clone_node(O2HZ_NODE)
-  end
 end
 
 class Resample
