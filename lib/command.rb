@@ -30,12 +30,6 @@ module Command
     results
   end
 
-  # Given a set of samples, build the Audulus wavetable node
-  def self.build_patch_from_samples(samples, title1, title2, output_path)
-    puts "building #{output_path}"
-    File.write(output_path, JSON.generate(Audulus.make_subpatch(WavetablePatch.build_patch(samples, title1, title2)['patch'])))
-  end
-
   def self.parse_arguments!(argv)
     results = {
       :spline_only => false
