@@ -3,12 +3,14 @@ PATH
   specs:
     build_audulus_wavetable_node (0.2.0)
       fftw3 (~> 0.3)
+      midilib (~> 2.0.5)
 
 GEM
   remote: https://rubygems.org/
   specs:
     fftw3 (0.3)
       narray
+    midilib (2.0.5)
     narray (0.6.1.2)
 
 PLATFORMS
