@@ -25,13 +25,13 @@ Steps 2–4 behave like a very precise single-pole non-resonant low-pass-filter,
 I probably could have used that, but this approach was more direct.
 """
 
-
 require 'json'
 
 # Load the library for building Audulus patches programmatically.
 require_relative 'audulus'
 require_relative 'sox'
 require_relative 'wavetable_patch'
+require_relative 'spline_helper'
 
 # Build just a spline from the given samples. Intended for automation rather than
 # for wavetables.
@@ -40,7 +40,7 @@ def build_spline_patch_from_wav_file(path)
 
   doc = Audulus.build_init_doc
   patch = doc['patch']
-  spline_node = WavetablePatch.build_spline_node_from_samples(patch_data[:samples])
+  spline_node = SplineHelper.build_spline_node_from_samples(patch_data[:samples])
   Audulus.add_node(patch, spline_node)
 
   File.write(patch_data[:output_path], JSON.generate(doc))

@@ -72,7 +72,7 @@ class WavetablePatch
     # generate the actual spline nodes corresponding to each wavetable
     spline_nodes =
       normalized_sample_sets.each_with_index.map {|samples, i|
-        spline_node = build_spline_node_from_samples(samples)
+        spline_node = SplineHelper.build_spline_node_from_samples(samples)
         move_node(spline_node, -100, i*200)
         spline_node
       }
@@ -132,15 +132,4 @@ class WavetablePatch
     File.write(patch_data[:output_path], JSON.generate(final_patch))
   end
 
-  def self.build_spline_node_from_samples(samples)
-    spline_node = build_simple_node("Spline")
-    spline_node["controlPoints"] = samples.each_with_index.map {|sample, i|
-      {
-        "x" => i.to_f/(samples.count-1).to_f,
-        "y" => (sample+1)/2,
-      }
-    }
-#    move_node(spline_node, -100, i*200)
-    spline_node
-  end
 end
