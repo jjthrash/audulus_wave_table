@@ -1,23 +1,21 @@
+PATH
+  remote: .
+  specs:
+    build_audulus_wavetable_node (0.2.0)
+      fftw3 (~> 0.3)
+
 GEM
   remote: https://rubygems.org/
   specs:
-    coderay (1.1.1)
     fftw3 (0.3)
       narray
-    method_source (0.8.2)
     narray (0.6.1.2)
-    pry (0.10.3)
-      coderay (~> 1.1.0)
-      method_source (~> 0.8.1)
-      slop (~> 3.4)
-    slop (3.6.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  fftw3
-  pry
+  build_audulus_wavetable_node!
 
 BUNDLED WITH
-   1.11.2
+   1.16.0
