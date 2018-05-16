@@ -258,29 +258,54 @@ end
 # Given a set of samples, build the Audulus wavetable node
 def build_patch_from_samples(samples, title1, title2, output_path)
   puts "building #{output_path}"
-  File.write(output_path, JSON.generate(make_subpatch(Patch.build_patch(samples, title1, title2)['patch'])))
+  File.write(output_path, JSON.generate(make_subpatch(WavetablePatch.build_patch(samples, title1, title2)['patch'])))
 end
 
-def usage
-  <<-END
-Usage: build_audulus_wavetable_node <wav_file>
+require 'optparse'
 
-Outputs an audulus patch built from the <wav_file>. Assumes the input is monophonic, containing a single-cycle waveform.
-  END
+def parse_arguments!(argv)
+  results = {
+    :spline_only => false
+  }
+  option_parser = OptionParser.new do |opts|
+    opts.banner = "build_audulus_wavetable_node [OPTIONS] WAV_FILE"
+
+    opts.on("-h", "--help", "Prints this help") do
+      results[:help] = opts.help
+    end
+
+    opts.on("-s", "--spline-only", "generate a patch containing only a spline corresponding to the samples in the provided WAV file") do
+      results[:spline_only] = true
+    end
+  end
+
+  option_parser.parse!(argv)
+  if argv.count != 1
+    results = {
+      :help => option_parser.help
+    }
+  end
+
+  results[:input_filename] = argv[0]
+
+  results
 end
 
 def command(argv)
-  if argv.count != 1
-    puts usage
-  else
-    path = argv[0]
-    unless File.exist?(path)
-      puts "Cannot find WAV file at #{path}"
-      exit(1)
-    end
-
-    build_patch_from_wav_file(path)
+  arguments = argv.dup
+  options = parse_arguments!(arguments)
+  if options.has_key?(:help)
+    puts options[:help]
+    exit(0)
   end
+
+  path = options[:input_filename]
+  unless File.exist?(path)
+    puts "Cannot find WAV file at #{path}"
+    exit(1)
+  end
+
+  build_patch_from_wav_file(path)
 end
 
 # This code is the starting point.. if we run this file as
