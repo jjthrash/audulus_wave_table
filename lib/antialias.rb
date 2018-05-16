@@ -4,6 +4,10 @@ class Antialias
   # sample_rate, Hz, e.g. 44100
   # fundamental, Hz, e.g. 440
   # samples: -1..1
+  # The sample_rate gives us the Nyquist limit, and the fundamental
+  # tells us how to calculate the partials to find out which ones fall
+  # above the Nyquist limit. With this knowledge we dampen those higher
+  # partials for the purpose of preventing aliases at that fundamental.
   def self.antialias_for_fundamental(sample_rate, fundamental, samples)
     fft = FFTW3.fft(NArray[samples]).to_a.flatten
     dampened = dampen_higher_partials(sample_rate, fundamental, fft)
