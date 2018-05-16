@@ -33,21 +33,6 @@ require_relative 'audulus'
 require_relative 'sox'
 require_relative 'wavetable_patch'
 
-# Given a path to a single-cycle-waveform wav file, generate an Audulus wavetable
-# node
-def build_wavetable_patch_from_wav_file(path)
-  patch_data = build_patch_data(path)
-
-  # build the patch as a full patch
-  base_patch = WavetablePatch.build_patch(patch_data[:samples], patch_data[:title1], patch_data[:title2])['patch']
-
-  # wrap it up as a subpatch
-  final_patch = Audulus.make_subpatch(base_patch)
-
-  # write the patch to a file as JSON (the format Audulus uses)
-  File.write(patch_data[:output_path], JSON.generate(final_patch))
-end
-
 # Build just a spline from the given samples. Intended for automation rather than
 # for wavetables.
 def build_spline_patch_from_wav_file(path)
@@ -153,7 +138,7 @@ def command(argv)
   if options[:spline_only]
     build_spline_patch_from_wav_file(path)
   else
-    build_wavetable_patch_from_wav_file(path)
+    WavetablePatch.build_patch_from_wav_file(path)
   end
 end
 

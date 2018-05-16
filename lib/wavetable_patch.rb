@@ -117,6 +117,21 @@ class WavetablePatch
     doc
   end
 
+  # Given a path to a single-cycle-waveform wav file, generate an Audulus wavetable
+  # node
+  def self.build_patch_from_wav_file(path)
+    patch_data = build_patch_data(path)
+
+    # build the patch as a full patch
+    base_patch = WavetablePatch.build_patch(patch_data[:samples], patch_data[:title1], patch_data[:title2])['patch']
+
+    # wrap it up as a subpatch
+    final_patch = Audulus.make_subpatch(base_patch)
+
+    # write the patch to a file as JSON (the format Audulus uses)
+    File.write(patch_data[:output_path], JSON.generate(final_patch))
+  end
+
   def self.build_spline_node_from_samples(samples)
     spline_node = build_simple_node("Spline")
     spline_node["controlPoints"] = samples.each_with_index.map {|sample, i|
