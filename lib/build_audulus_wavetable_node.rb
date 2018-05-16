@@ -45,7 +45,7 @@ class Sox
   end
 end
 
-class Patch
+class WavetablePatch
   # Take a list of samples corresponding to a single cycle wave form
   # and generate an Audulus patch with a single wavetable node that
   # has title1 and title2 as title and subtitle
@@ -113,13 +113,7 @@ class Patch
     # generate the actual spline nodes corresponding to each wavetable
     spline_nodes =
       normalized_sample_sets.each_with_index.map {|samples, i|
-        spline_node = build_simple_node("Spline")
-        spline_node["controlPoints"] = samples.each_with_index.map {|sample, i|
-          {
-            "x" => i.to_f/(samples.count-1).to_f,
-            "y" => (sample+1)/2,
-          }
-        }
+        spline_node = build_spline_node_from_samples(samples)
         move_node(spline_node, -100, i*200)
         spline_node
       }
@@ -162,6 +156,18 @@ class Patch
     wire_output_to_input(patch, range_scale_node, 0, output_node, 0)
 
     doc
+  end
+
+  def self.build_spline_node_from_samples(samples)
+    spline_node = build_simple_node("Spline")
+    spline_node["controlPoints"] = samples.each_with_index.map {|sample, i|
+      {
+        "x" => i.to_f/(samples.count-1).to_f,
+        "y" => (sample+1)/2,
+      }
+    }
+#    move_node(spline_node, -100, i*200)
+    spline_node
   end
 
   XMUX_NODE = JSON.parse(File.read(File.join(File.dirname(__FILE__), 'xmux.audulus')))['patch']['nodes'][0]
@@ -213,7 +219,33 @@ end
 
 # Given a path to a single-cycle-waveform wav file, generate an Audulus wavetable
 # node
-def build_patch_from_wav_file(path)
+def build_wavetable_patch_from_wav_file(path)
+  patch_data = build_patch_data(path)
+
+  # build the patch as a full patch
+  base_patch = WavetablePatch.build_patch(patch_data[:samples], patch_data[:title1], patch_data[:title2])['patch']
+
+  # wrap it up as a subpatch
+  final_patch = make_subpatch(base_patch)
+
+  # write the patch to a file as JSON (the format Audulus uses)
+  File.write(patch_data[:output_path], JSON.generate(final_patch))
+end
+
+# Build just a spline from the given samples. Intended for automation rather than
+# for wavetables.
+def build_spline_patch_from_wav_file(path)
+  patch_data = build_patch_data(path)
+
+  doc = build_init_doc
+  patch = doc['patch']
+  spline_node = WavetablePatch.build_spline_node_from_samples(patch_data[:samples])
+  add_node(patch, spline_node)
+
+  File.write(patch_data[:output_path], JSON.generate(doc))
+end
+
+def build_patch_data(path)
   # break the path into directory and path so we can build the audulus file's name
   parent, file = path.split("/")[-2..-1]
 
@@ -225,14 +257,11 @@ def build_patch_from_wav_file(path)
   puts "building #{basename}.audulus"
   audulus_patch_name = "#{basename}.audulus"
 
-  # build the patch as a full patch
-  base_patch = Patch.build_patch(samples, parent, basename)['patch']
-
-  # wrap it up as a subpatch
-  final_patch = make_subpatch(base_patch)
-
-  # write the patch to a file as JSON (the format Audulus uses)
-  File.write(audulus_patch_name, JSON.generate(final_patch))
+  { :output_path => audulus_patch_name,
+    :samples => samples,
+    :title1 => parent,
+    :title2 => basename,
+  }
 end
 
 # Make a set of random samples. Useful for generating a cyclic
@@ -305,7 +334,11 @@ def command(argv)
     exit(1)
   end
 
-  build_patch_from_wav_file(path)
+  if options[:spline_only]
+    build_spline_patch_from_wav_file(path)
+  else
+    build_wavetable_patch_from_wav_file(path)
+  end
 end
 
 # This code is the starting point.. if we run this file as
