@@ -30,7 +30,7 @@ module MidiPatch
     Audulus.add_node(patch, pitch_label)
     Audulus.move_node(pitch_label, -50, 300)
 
-    parent, file = File.expand_path(path).split("/")[-2..-1]
+    _, file = File.expand_path(path).split("/")[-2..-1]
     basename = File.basename(file, ".mid")
     File.write("#{basename}.audulus", JSON.generate(doc))
   end
