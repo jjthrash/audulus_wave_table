@@ -18,6 +18,11 @@ module MidiPatch
     Audulus.add_node(patch, pitch_node)
     Audulus.move_node(pitch_node, 0, 0)
 
+    scaler_node = Audulus.build_expr_node('x*10-5')
+    Audulus.add_node(patch, scaler_node)
+    Audulus.move_node(scaler_node, 425, 55)
+    Audulus.wire_output_to_input(patch, pitch_node, 0, scaler_node, 0)
+
     pitch_label = Audulus.build_text_node("pitch")
     Audulus.add_node(patch, pitch_label)
     Audulus.move_node(pitch_label, -50, 100)
