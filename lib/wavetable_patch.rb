@@ -99,7 +99,8 @@ class WavetablePatch
     # generate the actual spline nodes corresponding to each wavetable
     spline_nodes =
       normalized_sample_sets.each_with_index.map {|samples, i|
-        spline_node = SplineHelper.build_spline_node_from_samples(samples)
+        scaled_samples = samples.map {|sample| (sample.to_f + 1.0)/2.0}
+        spline_node = SplineHelper.build_spline_node_from_samples(scaled_samples)
         move_node(spline_node, -100, i*200)
         spline_node
       }

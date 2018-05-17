@@ -3,7 +3,7 @@ require 'spline_helper'
 
 class SplineHelperTest < Minitest::Test
   def test_building_from_samples
-    samples = [-1, 0, 1]
+    samples = [0, 0.5, 1]
     result = SplineHelper.build_spline_node_from_samples(samples)
     point0 = result['controlPoints'][0]
     assert_equal(0.0, point0['x'])
@@ -18,9 +18,9 @@ class SplineHelperTest < Minitest::Test
 
   def test_building_from_coordinates
     coordinates = [[0,   1],
-                   [0.3, 0],
-                   [0.6, -1],
-                   [1.0, -0.5],]
+                   [0.3, 0.5],
+                   [0.6, 0.0],
+                   [1.0, 0.25],]
     result = SplineHelper.build_spline_node_from_coordinates(coordinates)
     point0 = result['controlPoints'][0]
     assert_equal(0.0, point0['x'])
