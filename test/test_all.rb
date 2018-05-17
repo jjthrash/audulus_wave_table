@@ -22,5 +22,9 @@ class AllTest < Minitest::Test
     options = Command.parse_arguments!(["-s", "filename"])
     assert_equal("filename", options[:input_filename])
     assert(options[:spline_only])
+
+    options = Command.parse_arguments!(["-m", "filename"])
+    assert_equal("filename", options[:input_filename])
+    assert(options[:midi])
   end
 end

@@ -4,6 +4,7 @@ require_relative 'audulus'
 require_relative 'sox'
 require_relative 'wavetable_patch'
 require_relative 'spline_patch'
+require_relative 'midi_patch'
 require_relative 'spline_helper'
 
 module Command
@@ -41,8 +42,12 @@ module Command
         results[:help] = opts.help
       end
 
-      opts.on("-s", "--spline-only", "generate a patch containing only a spline corresponding to the samples in the provided WAV file") do
+      opts.on("-s", "--spline", "generate a patch containing only a spline corresponding to the samples in the provided WAV file") do
         results[:spline_only] = true
+      end
+
+      opts.on("-m", "--midi", "generate a patch containing two splines based on the provided MIDI file") do |t|
+        results[:midi] = true
       end
 
       opts.on("-tTITLE", "--title=TITLE", "provide a title for the patch (defaults to parent directory)") do |t|
@@ -80,11 +85,14 @@ module Command
       exit(1)
     end
 
-    patch_data = build_patch_data(path, options[:title], options[:subtitle])
 
     if options[:spline_only]
+      patch_data = build_patch_data(path, options[:title], options[:subtitle])
       SplinePatch.build_patch(patch_data)
+    elsif options[:midi]
+      MidiPatch.build_patch(path)
     else
+      patch_data = build_patch_data(path, options[:title], options[:subtitle])
       WavetablePatch.build_patch(patch_data)
     end
   end
