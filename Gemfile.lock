@@ -3,16 +3,21 @@ PATH
   specs:
     build_audulus_wavetable_node (0.2.0)
       fftw3 (~> 0.3)
-      midilib (~> 2.0.5)
+      midilib (~> 2.0)
 
 GEM
   remote: https://rubygems.org/
   specs:
+    coderay (1.1.2)
     fftw3 (0.3)
       narray
+    method_source (0.9.0)
     midilib (2.0.5)
     minitest (5.11.3)
     narray (0.6.1.2)
+    pry (0.11.3)
+      coderay (~> 1.1.0)
+      method_source (~> 0.9.0)
     rake (12.3.1)
 
 PLATFORMS
@@ -20,7 +25,8 @@ PLATFORMS
 
 DEPENDENCIES
   build_audulus_wavetable_node!
-  minitest
+  minitest (~> 5.11)
+  pry
   rake
 
 BUNDLED WITH
