@@ -36,7 +36,7 @@ module Command
       :spline_only => false
     }
     option_parser = OptionParser.new do |opts|
-      opts.banner = "build_audulus_wavetable_node [OPTIONS] WAV_FILE"
+      opts.banner = "build_audulus_wavetable_node [OPTIONS] INPUT_FILE"
 
       opts.on("-h", "--help", "Prints this help") do
         results[:help] = opts.help
