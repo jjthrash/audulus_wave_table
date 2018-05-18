@@ -4,6 +4,8 @@ require_relative 'spline_helper'
 require 'pry'
 
 module MidiPatch
+  STEPWISE_X_DELTA = 0.0001
+
   def self.build_patch(path)
     seq = MIDI::Sequence.new()
 
@@ -56,7 +58,8 @@ module MidiPatch
     }
 
     coordinates = scaled_times.zip(scaled_notes)
-    SplineHelper.build_spline_node_from_coordinates(coordinates)
+    stepwise_coordinates = make_stepwise(coordinates)
+    SplineHelper.build_spline_node_from_coordinates(stepwise_coordinates)
   end
 
   def self.build_gate_node(seq)
@@ -82,7 +85,8 @@ module MidiPatch
       end
     }
 
-    SplineHelper.build_spline_node_from_coordinates(coordinates)
+    stepwise_coordinates = make_stepwise(coordinates)
+    SplineHelper.build_spline_node_from_coordinates(stepwise_coordinates)
   end
 
   def self.scale_time(time, min_time, max_time)
@@ -99,5 +103,16 @@ module MidiPatch
 
   def self.remove_from_stack(stack, event)
     stack.delete_if {|e| e.note == event.note}
+  end
+
+  def self.make_stepwise(coordinates)
+    last_y = nil
+    coordinates.flat_map {|x, y|
+      result = []
+      result << [x-STEPWISE_X_DELTA, last_y] unless last_y.nil?
+      result << [x, y]
+      last_y = y
+      result
+    }
   end
 end
