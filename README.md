@@ -34,5 +34,4 @@ for context.
 
 - rearrange to make useful as a library so people can supply calculated
   samples rather than only WAV files
-- allow users to specify title and subtitle for nodes rather than using
-  parent directory and filename
+- clean up utility (it's not just WAV->wavetable any more)
