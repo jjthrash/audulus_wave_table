@@ -42,10 +42,6 @@ module Command
         results[:help] = opts.help
       end
 
-      opts.on("-s", "--spline", "generate a patch containing only a spline corresponding to the samples in the provided WAV file") do
-        results[:spline_only] = true
-      end
-
       opts.on("-tTITLE", "--title=TITLE", "provide a title for the patch (defaults to parent directory)") do |t|
         results[:title] = t
       end
@@ -71,13 +67,8 @@ module Command
     options = parse_arguments!(argv)
     handle_base_options(options)
 
-    if options[:spline_only]
-      patch_data = build_patch_data(options[:input_filename], options[:title], options[:subtitle])
-      SplinePatch.build_patch(patch_data)
-    else
-      patch_data = build_patch_data(options[:input_filename], options[:title], options[:subtitle])
-      WavetablePatch.build_patch(patch_data)
-    end
+    patch_data = build_patch_data(options[:input_filename], options[:title], options[:subtitle])
+    WavetablePatch.build_patch(patch_data)
   end
 
   def self.parse_midi_arguments!(argv)
