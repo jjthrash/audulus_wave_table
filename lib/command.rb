@@ -8,7 +8,7 @@ require_relative 'midi_patch'
 require_relative 'spline_helper'
 
 module Command
-  def self.build_patch_data(path, title, subtitle)
+  def self.build_patch_data(path, title=nil, subtitle=nil)
     # break the path into directory and path so we can build the audulus file's name
     parent, file = path.split("/")[-2..-1]
 
@@ -107,6 +107,40 @@ module Command
     options = parse_midi_arguments!(argv)
     handle_base_options(options)
     MidiPatch.build_patch(options[:input_filename])
+  end
+
+  def self.parse_spline_arguments!(argv)
+    results = {}
+
+    option_parser = OptionParser.new do |opts|
+      opts.banner = "#{$0} [OPTIONS] INPUT_FILE"
+
+      opts.on("-h", "--help", "Prints this help") do
+        results[:help] = opts.help
+      end
+
+#      opts.on("-c", "--csv", "Interpret the input file as CSV, not WAV") do
+#        results[:csv] = true
+#      end
+    end
+
+    option_parser.parse!(argv)
+    if argv.count != 1
+      results = {
+        :help => option_parser.help
+      }
+    end
+
+    results[:input_filename] = argv[0]
+
+    results
+  end
+
+  def self.run_build_spline_node(argv)
+    options = parse_spline_arguments!(argv)
+    handle_base_options(options)
+    patch_data = build_patch_data(options[:input_filename])
+    SplinePatch.build_patch(patch_data)
   end
 
   def self.handle_base_options(options)

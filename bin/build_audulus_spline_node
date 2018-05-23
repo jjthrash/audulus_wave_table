@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+require 'command'
+Command.run_build_spline_node(ARGV)
