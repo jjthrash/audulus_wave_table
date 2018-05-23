@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+require 'command'
+Command.run_build_midi_node(ARGV)

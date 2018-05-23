@@ -36,7 +36,7 @@ module Command
       :spline_only => false
     }
     option_parser = OptionParser.new do |opts|
-      opts.banner = "build_audulus_wavetable_node [OPTIONS] INPUT_FILE"
+      opts.banner = "#{$0} [OPTIONS] INPUT_FILE"
 
       opts.on("-h", "--help", "Prints this help") do
         results[:help] = opts.help
@@ -72,8 +72,50 @@ module Command
   end
 
   def self.run(argv)
-    arguments = argv.dup
-    options = parse_arguments!(arguments)
+    options = parse_arguments!(argv)
+    handle_base_options(options)
+
+    if options[:spline_only]
+      patch_data = build_patch_data(options[:input_filename], options[:title], options[:subtitle])
+      SplinePatch.build_patch(patch_data)
+    elsif options[:midi]
+      MidiPatch.build_patch(options[:input_filename])
+    else
+      patch_data = build_patch_data(options[:input_filename], options[:title], options[:subtitle])
+      WavetablePatch.build_patch(patch_data)
+    end
+  end
+
+  def self.parse_midi_arguments!(argv)
+    results = {}
+
+    option_parser = OptionParser.new do |opts|
+      opts.banner = "#{$0} [OPTIONS] INPUT_FILE"
+
+      opts.on("-h", "--help", "Prints this help") do
+        results[:help] = opts.help
+      end
+    end
+
+    option_parser.parse!(argv)
+    if argv.count != 1
+      results = {
+        :help => option_parser.help
+      }
+    end
+
+    results[:input_filename] = argv[0]
+
+    results
+  end
+
+  def self.run_build_midi_node(argv)
+    options = parse_midi_arguments!(argv)
+    handle_base_options(options)
+    MidiPatch.build_patch(options[:input_filename])
+  end
+
+  def self.handle_base_options(options)
     if options.has_key?(:help)
       puts options[:help]
       exit(0)
@@ -81,19 +123,10 @@ module Command
 
     path = options[:input_filename]
     unless File.exist?(path)
-      puts "Cannot find WAV file at #{path}"
+      puts "Cannot find file at #{path}"
       exit(1)
     end
 
-
-    if options[:spline_only]
-      patch_data = build_patch_data(path, options[:title], options[:subtitle])
-      SplinePatch.build_patch(patch_data)
-    elsif options[:midi]
-      MidiPatch.build_patch(path)
-    else
-      patch_data = build_patch_data(path, options[:title], options[:subtitle])
-      WavetablePatch.build_patch(patch_data)
-    end
+    options
   end
 end
