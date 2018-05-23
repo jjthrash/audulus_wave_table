@@ -46,10 +46,6 @@ module Command
         results[:spline_only] = true
       end
 
-      opts.on("-m", "--midi", "generate a patch containing two splines based on the provided MIDI file") do |t|
-        results[:midi] = true
-      end
-
       opts.on("-tTITLE", "--title=TITLE", "provide a title for the patch (defaults to parent directory)") do |t|
         results[:title] = t
       end
@@ -78,8 +74,6 @@ module Command
     if options[:spline_only]
       patch_data = build_patch_data(options[:input_filename], options[:title], options[:subtitle])
       SplinePatch.build_patch(patch_data)
-    elsif options[:midi]
-      MidiPatch.build_patch(options[:input_filename])
     else
       patch_data = build_patch_data(options[:input_filename], options[:title], options[:subtitle])
       WavetablePatch.build_patch(patch_data)
