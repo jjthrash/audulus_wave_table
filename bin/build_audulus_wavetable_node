@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
 
 require 'command'
-Command.run(ARGV)
+Command.run_build_wavetable_node(ARGV)
 

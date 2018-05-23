@@ -63,7 +63,7 @@ module Command
     results
   end
 
-  def self.run(argv)
+  def self.run_build_wavetable_node(argv)
     options = parse_arguments!(argv)
     handle_base_options(options)
 
