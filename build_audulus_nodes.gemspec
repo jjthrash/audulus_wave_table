@@ -1,5 +1,5 @@
 Gem::Specification.new do |s|
-  s.name        = 'build_audulus_wavetable_node'
+  s.name        = 'build_audulus_nodes'
   s.version     = '0.5.0'
   s.date        = '2018-05-23'
   s.summary     = "Builds Audulus patches based on WAV, CSV, or MIDI file inputs"
@@ -8,6 +8,8 @@ Gem::Specification.new do |s|
   s.email       = 'jimmy@jimmythrasher.com'
   s.files       = Dir.glob("lib/*")
   s.executables << "build_audulus_wavetable_node"
+  s.executables << "build_audulus_spline_node"
+  s.executables << "build_audulus_midi_nodes"
   s.homepage    =
     'https://github.com/jjthrash/audulus_wave_table'
   s.license       = 'MIT'

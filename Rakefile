@@ -9,7 +9,7 @@ task :clean do
 end
 
 task :build do
-  system("gem build build_audulus_wavetable_node.gemspec")
+  system("gem build build_audulus_nodes.gemspec")
 end
 
 desc "Run tests"

@@ -12,7 +12,7 @@ This gem includes three tools:
 From a terminal:
 
 ```
-sudo gem install build_audulus_wavetable_node
+sudo gem install build_audulus_nodes
 ```
 
 You will be asked for a password. Use your own password. The `sudo` command
